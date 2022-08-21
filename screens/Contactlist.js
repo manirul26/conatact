@@ -22,6 +22,7 @@ export default class Contactlist extends React.Component {
   }
 
   loadContacts = async () => {
+    
     const { status } = await Contacts.requestPermissionsAsync();
     if (status !== 'granted') {
       return;
@@ -112,9 +113,9 @@ const styles = StyleSheet.create({
     flex: 1
   },
   textbox:{
-    height: 30,
+    height: 40,
     fontSize: 12,
-    padding: 0,
+    padding: 10,
     color: '#000',
     borderBottomWidth: 0.5,
     borderBottomColor: '#7d90a0'
