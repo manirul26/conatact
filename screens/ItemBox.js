@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-
+import { useNavigation } from '@react-navigation/native';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const ItemBox = (props) => {
@@ -19,15 +19,19 @@ const ItemBox = (props) => {
       extrapolate: 'clamp',
     });
     return (
-      <TouchableOpacity onPress={props.handleDelete} activeOpacity={0.6}>
-         <View style={styles.deleteBox} 
-       >
+      <TouchableOpacity activeOpacity={0.6}>
+         <View style={styles.deleteBox}>
           <Animated.Text  style={
            styles.anima,
-           {transform: [{scale: scale}]}}>
+           {transform: [{scale: scale}]}}
+           onPress={props.handleEdit} 
+           >
             Edit
           </Animated.Text>
-          <Animated.Text  style={styles.anima2,{transform: [{scale: scale}]}}>
+          <Animated.Text  
+          style={styles.anima2,{transform: [{scale: scale}]}}
+          onPress={props.handleDelete} 
+          >
             Delete
           </Animated.Text>
         </View>
@@ -37,7 +41,7 @@ const ItemBox = (props) => {
   return (
     <Swipeable renderLeftActions={leftSwipe}>
       <View style={styles.container}>
-        <Text>My name is {props.data.firstname}.</Text>
+        <Text>{props.data.firstname} {props.data.lastname}</Text>
       </View>
     </Swipeable>
   );
@@ -52,6 +56,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'center',
     padding: 16,
+    shadowOpacity: 0.88,
+    shadowOffset: {
+      width: 0,
+      height: 20
+    },
+    shadowRadius: 10,
+    elevation: 5,
+    borderWidth: 1,
+    borderColor: 'red'
+    
   },
   anima: {
     backgroundColor: 'silver'

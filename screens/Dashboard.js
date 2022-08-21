@@ -1,54 +1,25 @@
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView, View, StyleSheet, 
-FlatList, Text, ActivityIndicator} from 'react-native';
+FlatList, Text, ActivityIndicator, Alert} from 'react-native';
 import ItemBox from './ItemBox';
 import axios from "axios";
 import * as base from "./api";
-/* const data = [
-  {id: '1', name: 'A'},
-  {id: '2', name: 'B'},
-  {id: '3', name: 'C'},
-  {id: '4', name: 'D'},
-  {id: '5', name: 'E'},
-  {id: '6', name: 'F'},
-  {id: '7', name: 'G'},
-  {id: '8', name: 'H'},
-  {id: '9', name: 'I'},
-  {id: '10', name: 'J'},
-  {id: '11', name: 'K'},
-  {id: '12', name: 'L'},
-  {id: '13', name: 'M'},
-  {id: '14', name: 'N'},
-  {id: '15', name: 'O'},
-  {id: '16', name: 'P'},
-  {id: '17', name: 'Q'},
-  {id: '18', name: 'R'},
-  {id: '19', name: 'S'},
-  {id: '20', name: 'T'},
-  {id: '21', name: 'U'},
-  {id: '22', name: 'V'},
-  {id: '23', name: 'W'},
-  {id: '24', name: 'X'},
-  {id: '25', name: 'Y'},
-  {id: '26', name: 'Z'},
-]; */
 
-const Dashboard = () => {
-  //const [lists, setLists] = useState(data);
-const [lists, setLists] = useState([]);
+const Dashboard = (props) => {
+  const [lists, setLists] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+      props.navigation.addListener('focus', () =>{
+        getUsers();
+      }) 
+  }, []);
 
-    const getUsers = () => {
+  const getUsers = () => {
     setIsLoading(true);
     axios.get(base.BASE_URL + `/getcontact?page=${currentPage}`)
       .then(res => {
-       // setLists(res.data.data);
-       // console.log(res.data.data[0])
-        console.log(res.data.data.id)
-         console.log(res.data.data)
-       // setLists([...lists, ...res.data.results]);
        setLists([...lists, ...res.data.data]);
         setIsLoading(false);
       });
@@ -69,6 +40,8 @@ const [lists, setLists] = useState([]);
     getUsers();
   }, [currentPage]);
 
+
+
   const renderItem = ({ item }) => {
     return (
       <View style={styles.itemWrapperStyle}>
@@ -80,27 +53,47 @@ const [lists, setLists] = useState([]);
       </View>
     );
   };
-
-
-
-
   const deleteItem = (index) => {
-    const arr = [...lists];
-    arr.splice(index, 1);
-    setLists(arr);
+   console.log('delete.....' + index)
+   //delete_contact
+   const arr = [...lists];
+   arr.splice(index, 1);
+   setLists(arr);
+
+
+   axios.post(base.BASE_URL +'/delete_contact', 
+   { id:index })
+   .then(response => {
+     console.log('delete' + response.message)
+   
+   })
+   .catch((error) => console.log(error));
+   
   };
+
+const editItem =(index) => {
+  console.log('edit.....' + index)
+  props.navigation.navigate('Editcontact', {
+    id: index
+ })
+}
+
+
   return (
     <SafeAreaView style={styles.container}>
     <FlatList
         data={lists}
         renderItem={({item, index}) => {
           return <ItemBox data={item} 
-          handleDelete={() => deleteItem(index)} />;
+          handleDelete={() => deleteItem(item.id)} 
+          handleEdit={() => editItem(item.id)} 
+          
+          />;
         }}
         ItemSeparatorComponent={() => {
           return <View style={styles.seperatorLine}></View>;
         }} 
-        ListFooterComponent={renderLoader}
+       /*  ListFooterComponent={renderLoader} */
         onEndReached={loadMoreItem}
         onEndReachedThreshold={0}
       /> 

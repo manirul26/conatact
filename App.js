@@ -11,6 +11,7 @@ import Contactlist from './screens/Contactlist'
 import Contact from './screens/Contact'
 import Dashboard from './screens/Dashboard'
 import Testgrid from './screens/Testgrid'
+import Editcontact from './screens/Editcontact'
 const Stack = createStackNavigator();
 
 function LogoTitle() {
@@ -31,6 +32,16 @@ const App = (props) => {
    
       <Stack.Screen name="Dashboard" component={Dashboard}
          options={({ navigation }) => ({
+          headerTintColor: 'green',
+          headerStyle: {
+            backgroundColor: 'red'
+          },
+              headerTitle: '',
+              headerLeft: () => (
+                <TouchableOpacity> 
+                  <Text style={{ padding: 10, color: '#ffffff', fontSize: 14 }}>Phone Book</Text> 
+                </TouchableOpacity>
+              ),
               headerRight: () => (
                 <TouchableOpacity onPress={() => 
                 navigation.navigate("Contact")} >
@@ -41,22 +52,6 @@ const App = (props) => {
               ),
             })}
         />
-   
-    {/*   <Stack.Screen name="Contactlist" component={Contactlist}
-          options={({ route }) => ({
-            headerTitle: (props) => <LogoTitle {...props} />,
-            headerRight: () => (
-              <MaterialIcons name="add" size={24} color="black" 
-              style={{ padding: 5 }}
-              onPress={() => {
-                props.navigation.navigate('Contact');
-              }}
-              />
-            ),
-          
-          })}
-          
-        /> */}
 
 <Stack.Screen name="Contactlist" component={Contactlist}
             options={({ navigation }) => ({
@@ -72,12 +67,25 @@ const App = (props) => {
           />
 
         <Stack.Screen name="Contact" component={Contact}
-          options={({ route }) => ({
-            headerShown: true
+          options={() => ({
+            headerShown: true,
+            headerBackTitle: 'Back'
 
           })}
         />
-                <Stack.Screen name="Testgrid" component={Testgrid}
+       <Stack.Screen name="Editcontact" component={Editcontact}
+          options={({ route }) => ({
+            headerShown: true,
+            title: 'Edit Contact',
+            Autoid: route.params.id,
+            headerBackTitle: 'Back'
+
+          })}
+        />
+
+
+
+        <Stack.Screen name="Testgrid" component={Testgrid}
           options={({ route }) => ({
             headerShown: true
 
