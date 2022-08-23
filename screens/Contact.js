@@ -1,14 +1,14 @@
 
 import React, {useState, useEffect} from 'react'
-import { View, Text, StyleSheet, ActivityIndicator, 
-Alert } from 'react-native';
+import { View, Text, ActivityIndicator, 
+Alert, StyleSheet } from 'react-native';
 import { Button, TextInput, IconButton,
  } from "@react-native-material/core";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import * as base from "./api";
-
+import * as base from "../api/api";
+//import styles from './css/Contact'
 
 
 function Contact(props) {
@@ -20,9 +20,9 @@ const [isloading, setIsloading] = useState(false);
 
    const start = () => {
      
-   if(firstName == "")
+   if(firstName == "" || lastName == "" || phoneNo == "")
    {
-         alert('Required')
+         alert('Insert the Required Fields')
    }
    else{
    setIsloading(true)  
@@ -62,7 +62,7 @@ const [isloading, setIsloading] = useState(false);
 
 
    return (
-      <View style={styles.container}>
+      <View style={styles.inputContainer}>
        {
             isloading == true ?
             <View style={styles.spinner}>
@@ -92,7 +92,7 @@ const [isloading, setIsloading] = useState(false);
                onChangeText={(text) => setPhoneno(text)}
             />
              <Button 
-            title='Save'
+            title='Save' style={{ marginTop: 7 }}
             onPress={() => start()}
          />
           </View>
@@ -108,8 +108,8 @@ const styles = StyleSheet.create({
       flex: 1
     },
     inputContainer: {
-      padding: 10,
-      margin: 10
+      padding: 5,
+      margin: 5
     },
     input: {
       borderBottomWidth: 0.5,

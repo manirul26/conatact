@@ -6,7 +6,7 @@ import { Button, TextInput, IconButton,
  } from "@react-native-material/core";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import axios from "axios";
-import * as base from "./api";
+import * as base from "../api/api";
 
 
 
@@ -124,8 +124,8 @@ const styles = StyleSheet.create({
       flex: 1
     },
     inputContainer: {
-      padding: 10,
-      margin: 10
+      padding: 5,
+      margin: 5
     },
     input: {
       borderBottomWidth: 0.5,
